@@ -6,4 +6,17 @@ class Author < ApplicationRecord
     organization: 3,
     nonbinary: 4
   }
+
+  def name
+    if surname_first
+    else
+      (preferred_forenames || forenames) + " " + surname
+    end
+  end
+
+  def initials
+    return "" if forenames.blank?
+
+    forenames.split(/[. ]+/).map { |name| name[0] }.join(".") + "."
+  end
 end
