@@ -30,4 +30,12 @@ RSpec.describe Author, type: :model do
       expect(author.name).to eq("J.R.R. Tolkien")
     end
   end
+
+  # books
+  it "can have a book attached" do
+    author = create(:author, forenames: "John Ronald Reuel", surname: "Tolkien")
+    book = create(:book, title: "The Hobbit", first_author: author)
+
+    expect(author.books).to include(book)
+  end
 end
