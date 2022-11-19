@@ -24,3 +24,9 @@ repos:
         language: system
         entry: erblint --lint-all --autocorrect
         files: "(\\.erb)$"
+      - id: rspec
+        name: rspec
+        language: system
+        entry: rspec --format=failures --fail-fast
+        types: [ruby]
+        pass_filenames: false
