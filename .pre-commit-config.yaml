@@ -17,3 +17,10 @@ repos:
       - id: shfmt
       - id: prettier
       - id: rubocop
+  - repo: local
+    hooks:
+      - id: erb-lint
+        name: erb-lint
+        language: system
+        entry: erblint --lint-all --autocorrect
+        files: "(\\.erb)$"

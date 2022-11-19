@@ -69,6 +69,7 @@ group :development do
   # gem "spring"
 
   gem "standard"
+  gem "erb_lint"
 end
 
 group :test do
