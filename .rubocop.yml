@@ -15,6 +15,7 @@ AllCops:
 
 Layout/LineLength:
   Enabled: true
+  AllowedPatterns: ['^\s*#']
 
 Rails/I18nLocaleTexts:
   Enabled: false
