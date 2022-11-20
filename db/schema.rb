@@ -11,6 +11,9 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[7.0].define(version: 2022_11_19_112823) do
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "authors", force: :cascade do |t|
     t.string "forenames"
     t.string "surname"
@@ -26,7 +29,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_19_112823) do
   create_table "books", force: :cascade do |t|
     t.string "title"
     t.string "subtitle"
-    t.integer "first_author_id", null: false
+    t.bigint "first_author_id", null: false
     t.string "first_author_role"
     t.integer "first_published", limit: 2
     t.integer "edition_published", limit: 2
@@ -39,7 +42,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_19_112823) do
   end
 
   create_table "log_entries", force: :cascade do |t|
-    t.integer "book_id", null: false
+    t.bigint "book_id", null: false
     t.datetime "start_date", null: false
     t.datetime "end_date"
     t.datetime "progress_date"
