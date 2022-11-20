@@ -1,6 +1,6 @@
 class Book < ApplicationRecord
-  belongs_to :first_author, class_name: "Author", foreign_key: "first_author_id"
-  has_many :log_entries
+  belongs_to :first_author, class_name: "Author"
+  has_many :log_entries, dependent: :destroy
 
   def currently_reading?
     log_entries.present? && log_entries.last.currently_reading?

@@ -70,6 +70,8 @@ group :development do
 
   gem "standard"
   gem "erb_lint"
+  gem "rubocop-rails", require: false
+  gem "rubocop-rspec", require: false
 end
 
 group :test do

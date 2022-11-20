@@ -1,4 +1,20 @@
-require: standard
+require:
+  - rubocop-performance
+  - rubocop-rails
+  - rubocop-rspec
+  - standard
 
 inherit_gem:
-  standard: config/base.yml
+  standard:
+    - config/base.yml
+
+AllCops:
+  Exclude:
+    - bin/*
+  NewCops: enable
+
+Layout/LineLength:
+  Enabled: true
+
+Rails/I18nLocaleTexts:
+  Enabled: false

@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe LogEntry, type: :model do
+RSpec.describe LogEntry do
   it "is possible to mark a book as started" do
     book = create(:book)
     book.start_reading

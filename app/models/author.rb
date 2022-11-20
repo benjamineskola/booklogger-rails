@@ -1,5 +1,9 @@
 class Author < ApplicationRecord
-  has_many :first_authored_books, class_name: "Book", inverse_of: "first_author", foreign_key: "first_author_id"
+  has_many :first_authored_books,
+    class_name: "Book",
+    inverse_of: "first_author",
+    foreign_key: "first_author_id",
+    dependent: :destroy
 
   enum gender: {
     unknown: 0,
@@ -19,7 +23,7 @@ class Author < ApplicationRecord
   def initials
     return "" if forenames.blank?
 
-    forenames.split(/[. ]+/).map { |name| name[0] }.join(".") + "."
+    forenames.split(/[. ]+/).pluck(0).join(".") + "."
   end
 
   def books

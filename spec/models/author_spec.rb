@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Author, type: :model do
+RSpec.describe Author do
   # initials
   it "returns the initials of an author" do
     author = create(:author, forenames: "John Ronald Reuel", surname: "Tolkien")
@@ -23,7 +23,7 @@ RSpec.describe Author, type: :model do
     expect(author.name).to eq("John Ronald Reuel Tolkien")
   end
 
-  context "there is a preferred forename for the author" do
+  context "when there is a preferred forename for the author" do
     it "combines forenames and surname to display full name" do
       author = create(:author, forenames: "John Ronald Reuel", preferred_forenames: "J.R.R.", surname: "Tolkien")
 
