@@ -160,7 +160,7 @@ GEM
       ast (~> 2.4.1)
     pg (1.4.5)
     public_suffix (5.0.0)
-    puma (5.6.5)
+    puma (6.0.2)
       nio4r (~> 2.0)
     racc (1.6.2)
     rack (2.2.4)
@@ -303,7 +303,7 @@ DEPENDENCIES
   importmap-rails
   jbuilder
   pg
-  puma (~> 5.0)
+  puma (~> 6.0)
   rails (~> 7.0.4)
   rspec-rails
   rubocop-rails
