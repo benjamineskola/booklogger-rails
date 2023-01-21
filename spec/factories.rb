@@ -4,8 +4,14 @@ FactoryBot.define do
     surname { Faker::Name.last_name }
   end
 
-  factory :book do
+  factory :primary_edition, aliases: [:book, :parent_edition] do
     title { Faker::Book.title }
     first_author
+    isbn { Faker::Code.isbn }
+  end
+
+  factory :edition do
+    parent_edition
+    isbn { Faker::Code.isbn }
   end
 end

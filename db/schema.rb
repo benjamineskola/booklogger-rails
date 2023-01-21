@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_21_113559) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_21_114448) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -29,7 +29,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_21_113559) do
   create_table "books", force: :cascade do |t|
     t.string "title"
     t.string "subtitle"
-    t.bigint "first_author_id", null: false
+    t.bigint "first_author_id"
     t.string "first_author_role"
     t.integer "first_published", limit: 2
     t.integer "edition_published", limit: 2
@@ -39,7 +39,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_21_113559) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "type"
+    t.bigint "parent_edition_id"
     t.index ["first_author_id"], name: "index_books_on_first_author_id"
+    t.index ["parent_edition_id"], name: "index_books_on_parent_edition_id"
+    t.check_constraint "NOT (parent_edition_id IS NULL AND first_author_id IS NULL)", name: "either_parent_or_author"
+    t.check_constraint "parent_edition_id IS NULL OR first_author_id IS NULL", name: "only_parent_or_author"
   end
 
   create_table "log_entries", force: :cascade do |t|
@@ -72,5 +76,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_21_113559) do
   end
 
   add_foreign_key "books", "authors", column: "first_author_id"
+  add_foreign_key "books", "books", column: "parent_edition_id"
   add_foreign_key "log_entries", "books"
 end
