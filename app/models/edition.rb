@@ -1,0 +1,2 @@
+class Edition < Book
+end

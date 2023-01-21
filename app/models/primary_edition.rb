@@ -1,0 +1,2 @@
+class PrimaryEdition < Book
+end
