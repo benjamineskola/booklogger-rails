@@ -3,6 +3,14 @@ class Book < ApplicationRecord
   has_many :log_entries, dependent: :destroy
   has_many :editions, foreign_key: "parent_edition_id", inverse_of: "parent_edition", dependent: :destroy
 
+  enum format: {
+    unknown: 0,
+    paperback: 1,
+    hardback: 2,
+    ebook: 3,
+    web: 4
+  }
+
   def currently_reading?
     log_entries.present? && log_entries.last.currently_reading?
   end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_21_114448) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_21_133542) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -40,6 +40,18 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_21_114448) do
     t.datetime "updated_at", null: false
     t.string "type"
     t.bigint "parent_edition_id"
+    t.string "language"
+    t.string "edition_language"
+    t.integer "format"
+    t.integer "edition_number"
+    t.string "edition_description"
+    t.string "edition_title"
+    t.string "edition_subtitle"
+    t.string "image_url"
+    t.string "publisher_url"
+    t.string "asin"
+    t.string "goodreads_id"
+    t.boolean "want_to_read", default: true, null: false
     t.index ["first_author_id"], name: "index_books_on_first_author_id"
     t.index ["parent_edition_id"], name: "index_books_on_parent_edition_id"
     t.check_constraint "NOT (parent_edition_id IS NULL AND first_author_id IS NULL)", name: "either_parent_or_author"
