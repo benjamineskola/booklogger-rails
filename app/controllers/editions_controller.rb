@@ -1,0 +1,2 @@
+class EditionsController < BooksController
+end

@@ -1,6 +1,6 @@
 <p style="color: green"><%= notice %></p>
 
-<%= render @book %>
+<%= render partial: "books/book", locals: {book: @book} %>
 
 <div>
   <%= link_to "Edit this book", edit_book_path(@book) %> |
