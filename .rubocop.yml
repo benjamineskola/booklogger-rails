@@ -13,6 +13,7 @@ AllCops:
     - bin/*
     - vendor/*
   NewCops: enable
+  TargetRubyVersion: 3.2
 
 Layout/LineLength:
   Enabled: true
