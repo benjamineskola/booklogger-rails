@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :authors
   root to: "books#index"
 
   devise_for :users
