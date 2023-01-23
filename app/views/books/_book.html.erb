@@ -1,3 +1,12 @@
 <div id="<%= dom_id book %>">
-  <%= book.first_author.name %>,  <em><%= book.title %></em>
+  <%= book.first_author.name %>,
+  <% if book.edition_title.present? %>
+    <em><%= book.edition_title %></em><%- if book.edition_subtitle.present? %>:
+      <em><%= book.edition_subtitle %></em>
+    <% end %>
+  <% else %>
+    <em><%= book.title %></em><% if book.subtitle.present? %><em>:
+      <%= book.subtitle %></em>
+    <% end %>
+  <% end %>
 </div>

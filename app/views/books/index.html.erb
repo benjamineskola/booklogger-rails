@@ -4,7 +4,7 @@
 
 <div id="books">
   <% @books.each do |book| %>
-    <%= render book %>
+    <%= render partial: "books/book", locals: {book: book} %>
     <p>
       <%= link_to "Show this book", book %>
     </p>
