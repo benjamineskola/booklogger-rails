@@ -15,9 +15,6 @@ gem "pg"
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", "~> 6.0"
 
-# Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
-gem "turbo-rails"
-
 # Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
 gem "stimulus-rails"
 
