@@ -1,12 +1,25 @@
-<div id="<%= dom_id book %>">
-  <%= book.first_author.name %>,
-  <% if book.edition_title.present? %>
-    <em><%= book.edition_title %></em><%- if book.edition_subtitle.present? %>:
-      <em><%= book.edition_subtitle %></em>
-    <% end %>
-  <% else %>
-    <em><%= book.title %></em><% if book.subtitle.present? %><em>:
-      <%= book.subtitle %></em>
-    <% end %>
+<div id="<%= dom_id book %>" class="book">
+  <% if book.image_url.present? %>
+    <div class="book-image">
+      <%= image_tag book.image_url, loading: :lazy %>
+    </div>
   <% end %>
+  <div class="book-body">
+    <p>
+      <%= book.first_author.name %>,
+      <% if book.edition_title.present? %>
+        <em><%= book.edition_title %></em><%- if book.edition_subtitle.present? %>:
+          <em><%= book.edition_subtitle %></em>
+        <% end %>
+      <% else %>
+        <em><%= book.title %></em><% if book.subtitle.present? %><em>:
+          <%= book.subtitle %></em>
+        <% end %>
+      <% end %>
+    </p>
+    <p><% if book.edition_published or book.first_published %>
+        (<% if book.edition_published and book.first_published -%>[<%= book.first_published %>]
+        <%= book.edition_published %><% else %><%= book.edition_published || book.first_published %><% end %>)
+      <% end %></p>
+  </div>
 </div>
