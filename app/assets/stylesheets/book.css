@@ -1,0 +1,31 @@
+#books {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 2rem;
+  align-items: stretch;
+}
+
+.book {
+  border: 1px solid silver;
+  border-radius: 0.25rem;
+
+  flex-basis: calc(50% - 1rem);
+
+  display: flex;
+}
+
+@media only screen and (max-width: 768px) {
+  /* this is a little annoying */
+  .book {
+    flex-basis: 100%;
+  }
+}
+
+.book-image {
+  flex-basis: 33.333%;
+}
+
+.book-body {
+  padding: 1rem;
+}
