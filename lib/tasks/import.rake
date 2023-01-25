@@ -1,32 +1,44 @@
 require "faraday"
 require "json"
 
+def create_author(author_data)
+  author = Author.find_or_create_by(id: author_data[:id]) do |a|
+    author_data.each_pair do |k, v|
+      if k == :primary_identity
+        k = :primary_identity_id
+      end
+
+      a.send("#{k}=", v)
+    rescue NoMethodError
+      puts "Not implemented yet? `#{k}`"
+    end
+  end
+  author.save!
+end
+
 task import: :environment do
-  authors = []
-  books = []
+  deferred_authors = []
 
   puts "importing authors"
   url = "https://booklogger.eskola.uk/export/authors/"
   (1..).each do |page|
     response = Faraday.get(url, {page: page}, {"Accept" => "application/json"})
     result = JSON.parse(response.body, symbolize_names: true)
-    authors += result[:authors]
     puts "#{result[:authors].first[:surname]}…#{result[:authors].last[:surname]}"
-    pp authors.length
     result[:authors].each do |author_data|
-      author = Author.find_or_create_by(id: author_data[:id]) do |a|
-        author_data.each_pair do |k, v|
-          a.send("#{k}=", v)
-        rescue NoMethodError
-          puts "Not implemented yet? `#{k}`"
-        end
+      if author_data[:primary_identity].present?
+        deferred_authors << author_data
+      else
+        create_author(author_data)
       end
-      author.save!
     end
 
     if page == result[:total_pages]
       break
     end
+  end
+  deferred_authors.each do |author_data|
+    create_author(author_data)
   end
 
   puts "importing books"
@@ -34,10 +46,8 @@ task import: :environment do
   (1..).each do |page|
     response = Faraday.get(url, {page: page}, {"Accept" => "application/json"})
     result = JSON.parse(response.body, symbolize_names: true)
-    books += result[:books]
     puts (result[:books].first[:edition_title] || result[:books].first[:title]).to_s + "…" \
     + (result[:books].last[:edition_title] || result[:books].last[:title]).to_s
-    pp books.length
 
     result[:books].each do |book_data|
       book = PrimaryEdition.find_or_create_by(id: book_data[:id]) do |new_book|

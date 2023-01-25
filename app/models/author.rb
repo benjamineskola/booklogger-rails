@@ -5,6 +5,17 @@ class Author < ApplicationRecord
     foreign_key: "first_author_id",
     dependent: :destroy
 
+  belongs_to :primary_identity,
+    class_name: "Author",
+    inverse_of: "pseudonyms",
+    optional: true,
+    dependent: :destroy
+  has_many :pseudonyms,
+    class_name: "Author",
+    inverse_of: "primary_identity",
+    foreign_key: "primary_identity_id",
+    dependent: :destroy
+
   enum gender: {
     unknown: 0,
     male: 1,
