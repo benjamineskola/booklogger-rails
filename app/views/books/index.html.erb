@@ -7,3 +7,5 @@
     <%= render partial: "books/book", locals: {book: book} %>
   <% end %>
 </div>
+
+<%= paginate @books %>

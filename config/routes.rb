@@ -1,10 +1,14 @@
 Rails.application.routes.draw do
-  resources :authors
   root to: "books#index"
 
   devise_for :users
 
-  resources :books
+  concern :paginatable do
+    get "(page/:page)", action: :index, on: :collection, as: ""
+  end
+
+  resources :authors, concerns: :paginatable
+  resources :books, concerns: :paginatable
   resources :primary_editions
   resources :editions
 end
