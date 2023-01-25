@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_25_135002) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_25_152039) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -55,6 +55,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_25_135002) do
     t.string "goodreads_id"
     t.boolean "want_to_read", default: true, null: false
     t.string "tags", default: [], array: true
+    t.string "series"
+    t.float "series_order"
     t.index ["first_author_id"], name: "index_books_on_first_author_id"
     t.index ["parent_edition_id"], name: "index_books_on_parent_edition_id"
     t.index ["tags"], name: "index_books_on_tags", using: :gin
