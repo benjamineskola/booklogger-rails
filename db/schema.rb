@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_21_133542) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_25_132703) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -52,8 +52,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_21_133542) do
     t.string "asin"
     t.string "goodreads_id"
     t.boolean "want_to_read", default: true, null: false
+    t.string "tags", default: [], array: true
     t.index ["first_author_id"], name: "index_books_on_first_author_id"
     t.index ["parent_edition_id"], name: "index_books_on_parent_edition_id"
+    t.index ["tags"], name: "index_books_on_tags", using: :gin
     t.check_constraint "NOT (parent_edition_id IS NULL AND first_author_id IS NULL)", name: "either_parent_or_author"
     t.check_constraint "parent_edition_id IS NULL OR first_author_id IS NULL", name: "only_parent_or_author"
   end
