@@ -23,8 +23,7 @@ def create_book(book_data)
     book_data.delete :first_author
     book_data.delete :first_author_role
 
-    book_data[:parent_edition_id] = book_data.delete :parent_edition if book_data[:parent_edition].present?
-    book_data[:parent_edition_id] = book_data.delete :primary_edition if book_data[:primary_edition].present?
+    book_data[:primary_edition] = Book.find(book_data[:primary_edition]) if book_data[:primary_edition].present?
     Edition
   else
     PrimaryEdition

@@ -1,7 +1,8 @@
 class Book < ApplicationRecord
   belongs_to :first_author, class_name: "Author"
+  belongs_to :owner, class_name: "User", optional: true, inverse_of: "books"
   has_many :log_entries, dependent: :destroy
-  has_many :editions, foreign_key: "parent_edition_id", inverse_of: "parent_edition", dependent: :destroy
+  has_many :editions, foreign_key: "primary_edition_id", inverse_of: "primary_edition", dependent: :destroy
   taggable_array :tags
 
   enum format: {
