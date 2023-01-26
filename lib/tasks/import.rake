@@ -46,6 +46,7 @@ def create_book(book_data)
     ebook_data.delete :id
 
     ebook_data[:primary_edition] = book_data[:id]
+    ebook_data[:owner_id] = ebook_data.delete :owned_by
     ebook_data[:format] = "ebook"
   end
 
@@ -53,9 +54,13 @@ def create_book(book_data)
     book_data.each_pair do |k, v|
       next if k == :log_entries
 
-      k = :format if k == :edition_format  # changed name
+      k = :format if k == :edition_format # changed name
       if k == :first_author
         v = Author.find(v)
+      end
+      if k == :owned_by
+        k = :owner
+        v = User.find(v)
       end
       new_book.send("#{k}=", v)
     rescue NoMethodError
@@ -81,6 +86,15 @@ end
 task import: :environment do
   deferred_authors = []
   deferred_books = []
+
+  User.find_or_create_by(id: 1) do |user|
+    user.name = "ben"
+    user.email = "ben@localhost"
+  end.save!(validate: false)
+  User.find_or_create_by(id: 2) do |user|
+    user.name = "sara"
+    user.email = "sara@localhost"
+  end.save!(validate: false)
 
   puts "importing authors"
   url = "https://booklogger.eskola.uk/export/authors/"
