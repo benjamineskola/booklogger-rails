@@ -29,6 +29,26 @@ def create_book(book_data)
   else
     PrimaryEdition
   end
+
+  if book_data[:has_ebook_edition] || book_data[:ebook_isbn].present? ||
+      book_data[:ebook_acquired_date].present? || book_data[:ebook_asin].present?
+    ebook_data = book_data.clone
+    ebook_data[:isbn] = book_data.delete :ebook_isbn
+    ebook_data[:asin] = book_data.delete :ebook_asin
+    ebook_data[:acquired_date] = book_data.delete :ebook_acquired_date
+    ebook_data[:owned_by] = 1 if book_data[:has_ebook_edition].present?
+
+    book_data.delete :has_ebook_edition
+    ebook_data.delete :has_ebook_edition
+    ebook_data.delete :ebook_isbn
+    ebook_data.delete :ebook_asin
+    ebook_data.delete :ebook_acquired_date
+    ebook_data.delete :id
+
+    ebook_data[:primary_edition] = book_data[:id]
+    ebook_data[:format] = "ebook"
+  end
+
   book = book_class.find_or_create_by(id: book_data[:id]) do |new_book|
     book_data.each_pair do |k, v|
       next if k == :log_entries
@@ -54,6 +74,8 @@ def create_book(book_data)
       entry.save!
     end
   end
+
+  create_book(ebook_data) if ebook_data.present?
 end
 
 task import: :environment do
