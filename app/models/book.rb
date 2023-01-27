@@ -32,6 +32,15 @@ class Book < ApplicationRecord
   scope :fiction, -> { with_any_tags("fiction") }
   scope :nonfiction, -> { with_any_tags("non-fiction") }
 
+  def to_s
+    first_author.name + ", " +
+      if edition_title.present? || edition_subtitle.present?
+        [edition_title, edition_subtitle].compact.join(": ")
+      else
+        [title, subtitle].compact.join(": ")
+      end
+  end
+
   def rating
     super.to_i / 2.0
   end

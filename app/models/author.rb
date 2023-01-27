@@ -32,9 +32,9 @@ class Author < ApplicationRecord
   def name
     forename = (preferred_forenames.presence || forenames).presence
     if surname_first
-      [surname, forename].join(" ")
+      [surname, forename].compact.join(" ")
     else
-      [forename, surname].join(" ")
+      [forename, surname].compact.join(" ")
     end
   end
 
