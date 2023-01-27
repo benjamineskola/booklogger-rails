@@ -51,7 +51,7 @@ def create_book(book_data)
 
   book = book_class.find_or_create_by(id: book_data[:id]) do |new_book|
     book_data.each_pair do |k, v|
-      next if k == :log_entries
+      next if k == :log_entries || k == :additional_authors
 
       k = :format if k == :edition_format # changed name
       if k == :first_author
@@ -66,6 +66,13 @@ def create_book(book_data)
       $not_implemented << k unless $not_implemented.include? k # rubocop:disable Style/GlobalVars
     end
   end
+
+  if book_data[:additional_authors].present?
+    book_data[:additional_authors].each do |author_id, role|
+      Authorship.new(author: Author.find(author_id), book: book, role: role).save!
+    end
+  end
+
   book.save!
 
   if book_data[:log_entries].present?

@@ -16,6 +16,9 @@ class Author < ApplicationRecord
     foreign_key: "primary_identity_id",
     dependent: :destroy
 
+  has_many :authorships, dependent: :destroy
+  has_many :additional_authored_books, through: :authorships, source: :book
+
   enum gender: {
     unknown: 0,
     male: 1,

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_26_132956) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_26_142216) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -26,6 +26,17 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_26_132956) do
     t.datetime "updated_at", null: false
     t.bigint "primary_identity_id"
     t.index ["primary_identity_id"], name: "index_authors_on_primary_identity_id"
+  end
+
+  create_table "authorships", force: :cascade do |t|
+    t.bigint "book_id", null: false
+    t.bigint "author_id", null: false
+    t.string "role"
+    t.integer "order"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["author_id"], name: "index_authorships_on_author_id"
+    t.index ["book_id"], name: "index_authorships_on_book_id"
   end
 
   create_table "books", force: :cascade do |t|
@@ -100,6 +111,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_26_132956) do
   end
 
   add_foreign_key "authors", "authors", column: "primary_identity_id"
+  add_foreign_key "authorships", "authors"
+  add_foreign_key "authorships", "books"
   add_foreign_key "books", "authors", column: "first_author_id"
   add_foreign_key "books", "books", column: "primary_edition_id"
   add_foreign_key "books", "users", column: "owner_id"
