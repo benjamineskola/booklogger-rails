@@ -20,6 +20,10 @@ class Book < ApplicationRecord
     web: 4
   }
 
+  default_scope {
+    joins(:first_author).order("authors.surname, authors.forenames, series, series_order, title")
+  }
+
   def rating
     super.to_i / 2.0
   end

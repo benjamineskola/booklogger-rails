@@ -27,6 +27,8 @@ class Author < ApplicationRecord
     nonbinary: 4
   }
 
+  default_scope { order(:surname, :forenames) }
+
   def name
     forename = (preferred_forenames.presence || forenames).presence
     if surname_first
