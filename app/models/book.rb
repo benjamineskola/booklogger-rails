@@ -20,6 +20,14 @@ class Book < ApplicationRecord
     web: 4
   }
 
+  def rating
+    super.to_i / 2.0
+  end
+
+  def rating=(new_rating)
+    super(new_rating * 2)
+  end
+
   def currently_reading?
     log_entries.present? && log_entries.last.currently_reading?
   end

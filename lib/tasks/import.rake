@@ -58,6 +58,8 @@ def create_book(book_data)
       k = :format if k == :edition_format # changed name
       if k == :first_author
         v = Author.find(v)
+      elsif k == :rating
+        v = v.to_f
       elsif k == :owned_by
         k = :owner
         v = User.find(v)
