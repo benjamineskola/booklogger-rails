@@ -5,6 +5,11 @@ class Book < ApplicationRecord
   has_many :editions, foreign_key: "primary_edition_id", inverse_of: "primary_edition", dependent: :destroy
   has_many :authorships, dependent: :destroy
   has_many :additional_authors, through: :authorships, source: :author
+
+  belongs_to :parent_edition, class_name: "Book", inverse_of: "subeditions", optional: true, dependent: :destroy
+  has_many :subeditions, class_name: "Book", inverse_of: "parent_edition", foreign_key: "parent_edition_id",
+    dependent: :destroy
+
   taggable_array :tags
 
   enum format: {

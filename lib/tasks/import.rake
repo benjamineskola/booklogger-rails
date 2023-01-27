@@ -23,7 +23,9 @@ def create_book(book_data)
     book_data.delete :first_author
     book_data.delete :first_author_role
 
-    book_data[:primary_edition] = Book.find(book_data[:primary_edition]) if book_data[:primary_edition].present?
+    if book_data[:primary_edition].present? && book_data[:primary_edition].instance_of?(Integer)
+      book_data[:primary_edition] = Book.find(book_data[:primary_edition])
+    end
     Edition
   else
     PrimaryEdition
@@ -56,10 +58,15 @@ def create_book(book_data)
       k = :format if k == :edition_format # changed name
       if k == :first_author
         v = Author.find(v)
-      end
-      if k == :owned_by
+      elsif k == :owned_by
         k = :owner
         v = User.find(v)
+      elsif k == :parent_edition
+        begin
+          v = Book.find(v)
+        rescue ActiveRecord::RecordNotFound
+          return book_data
+        end
       end
       new_book.send("#{k}=", v)
     rescue NoMethodError
@@ -73,7 +80,11 @@ def create_book(book_data)
     end
   end
 
-  book.save!
+  begin
+    book.save!
+  rescue ActiveRecord::RecordNotFound
+    return book_data
+  end
 
   if book_data[:log_entries].present?
     book_data[:log_entries] = book_data[:log_entries].map do |entry_data|
@@ -133,7 +144,7 @@ task import: :environment do
     + (result[:books].last[:edition_title] || result[:books].last[:title]).to_s
 
     result[:books].each do |book_data|
-      if book_data[:primary_edition].present?
+      if book_data[:primary_edition].present? || book_data[:parent_edition].present?
         deferred_books << book_data
       else
         create_book(book_data)
@@ -144,8 +155,10 @@ task import: :environment do
       break
     end
   end
-  deferred_books.each do |book_data|
-    create_book(book_data)
+
+  while deferred_books.length > 0
+    pp deferred_books.pluck(:title)
+    deferred_books = deferred_books.map { |book_data| create_book(book_data) }.compact
   end
 
   puts "not implemented: #{$not_implemented}" # rubocop:disable Style/GlobalVars

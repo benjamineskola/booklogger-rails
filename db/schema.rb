@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_26_142216) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_27_094154) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -73,8 +73,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_26_142216) do
     t.string "borrowed_from"
     t.date "acquired_date"
     t.date "alienated_date"
+    t.bigint "parent_edition_id"
     t.index ["first_author_id"], name: "index_books_on_first_author_id"
     t.index ["owner_id"], name: "index_books_on_owner_id"
+    t.index ["parent_edition_id"], name: "index_books_on_parent_edition_id"
     t.index ["primary_edition_id"], name: "index_books_on_primary_edition_id"
     t.index ["tags"], name: "index_books_on_tags", using: :gin
     t.check_constraint "NOT (primary_edition_id IS NULL AND first_author_id IS NULL)", name: "either_parent_or_author"
@@ -114,6 +116,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_26_142216) do
   add_foreign_key "authorships", "authors"
   add_foreign_key "authorships", "books"
   add_foreign_key "books", "authors", column: "first_author_id"
+  add_foreign_key "books", "books", column: "parent_edition_id"
   add_foreign_key "books", "books", column: "primary_edition_id"
   add_foreign_key "books", "users", column: "owner_id"
   add_foreign_key "log_entries", "books"
