@@ -24,6 +24,14 @@ class Book < ApplicationRecord
     joins(:first_author).order("authors.surname, authors.forenames, series, series_order, title")
   }
 
+  scope :want_to_read, -> { where(want_to_read: true) }
+  scope :currently_reading, -> { where.associated(:log_entries).where(log_entries: {end_date: nil}) }
+  scope :read, -> { where.associated(:log_entries).where.not(log_entries: {end_date: nil}) }
+  scope :owned, -> { where(owner_id: 1) }
+  scope :shared, -> { where(owner_id: 2) }
+  scope :fiction, -> { with_any_tags("fiction") }
+  scope :nonfiction, -> { with_any_tags("non-fiction") }
+
   def rating
     super.to_i / 2.0
   end
