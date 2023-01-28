@@ -21,7 +21,16 @@ class Book < ApplicationRecord
   }
 
   default_scope {
-    joins(:first_author).order("authors.surname, authors.forenames, series, series_order, title")
+    joins("LEFT JOIN authors direct_authors ON direct_authors.id = books.first_author_id")
+      .joins("LEFT JOIN books primary_edition ON primary_edition.id = books.primary_edition_id")
+      .joins("LEFT JOIN authors pe_authors ON pe_authors.id = primary_edition.first_author_id")
+      .order(Arel.sql(%(
+        COALESCE(direct_authors.surname, pe_authors.surname),
+        COALESCE(direct_authors.forenames, pe_authors.forenames),
+        series, series_order,
+        edition_title, edition_subtitle,
+        title, subtitle
+        )))
   }
 
   scope :want_to_read, -> { where(want_to_read: true) }
