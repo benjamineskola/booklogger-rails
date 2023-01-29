@@ -6,6 +6,21 @@ class BooksController < ApplicationController
     @books = Book.page(params[:page]).per(50)
   end
 
+  def currently_reading
+    @books = Book.currently_reading.page(params[:page]).per(50)
+    render :index
+  end
+
+  def toread
+    @books = Book.want_to_read.owned.page(params[:page]).per(50)
+    render :index
+  end
+
+  def wishlist
+    @books = Book.want_to_read.where(owner_id: nil).page(params[:page]).per(50)
+    render :index
+  end
+
   # GET /books/1 or /books/1.json
   def show
   end
