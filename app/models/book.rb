@@ -24,6 +24,7 @@ class Book < ApplicationRecord
     joins("LEFT JOIN authors direct_authors ON direct_authors.id = books.first_author_id")
       .joins("LEFT JOIN books primary_edition ON primary_edition.id = books.primary_edition_id")
       .joins("LEFT JOIN authors pe_authors ON pe_authors.id = primary_edition.first_author_id")
+      .where("NOT (books.type = 'Edition' and books.format = 3 and primary_edition.format <> 3)")
       .order(Arel.sql(%(
         COALESCE(direct_authors.surname, pe_authors.surname),
         COALESCE(direct_authors.forenames, pe_authors.forenames),
