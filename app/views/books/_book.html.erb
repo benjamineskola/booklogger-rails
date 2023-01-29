@@ -17,9 +17,47 @@
         <% end %>
       <% end %>
     </p>
-    <p><% if book.edition_published or book.first_published %>
+    <p>
+      <% if book.edition_published or book.first_published %>
         (<% if book.edition_published and book.first_published -%>[<%= book.first_published %>]
         <%= book.edition_published %><% else %><%= book.edition_published || book.first_published %><% end %>)
-      <% end %></p>
+      <% end %>
+      <% if book.publisher.present? %><%= book.publisher %>.<% end %>
+      <% if book.page_count.present? %><%= book.page_count %> pages.<% end %>
+      <% if book.rating.present? %>
+        <span style="display: inline-block">
+          <%= (1..5).map { |i|
+                if i <= book.rating
+                  "★"
+                elsif i == book.rating.floor + 1 && i == book.rating.ceil
+                  "½"
+                else
+                  "☆"
+                end
+              }.join %>
+        </span>
+      <% end %>
+    </p>
+    <p>
+      <% book.tags.each do |tag| %><%= tag %> <% end %>
+      <%= book.format %><% if not book.ebook? && book.editions.where(format: 3) %> ebook<% end %>
+    </p>
+    <% if book.log_entries.present? %>
+      <p>
+        <% if book.currently_reading? %>
+          Reading since <% book.log_entries.last.start_date %>.<br>
+        <% end %>
+        <% book.log_entries.select { |entry| entry.end_date.present? }.each do |entry| %>
+          <% if entry.end_date.year == 1 %>
+            Read sometime.<br>
+          <% elsif entry.start_date.present? %>
+            Read <%= entry.start_date.strftime("%d %b %Y") %>–<%= entry.end_date.strftime("%d %b %Y") %>.<br>
+          <% else %>
+            Finished <%= entry.end_date.strftime("%d %b %Y") %>.<br>
+          <% end %>
+        <% end %>
+      </p>
+    <% end %>
+    <%= link_to "more", book %>
   </div>
 </div>
