@@ -122,6 +122,7 @@ GEM
       faraday-net_http (>= 2.0, < 3.1)
       ruby2_keywords (>= 0.0.4)
     faraday-net_http (3.0.2)
+    foreman (0.87.2)
     globalid (1.0.1)
       activesupport (>= 5.0)
     i18n (1.12.0)
@@ -172,6 +173,8 @@ GEM
     net-smtp (0.3.3)
       net-protocol
     nio4r (2.5.8)
+    nokogiri (1.14.0-aarch64-linux)
+      racc (~> 1.4)
     nokogiri (1.14.0-arm64-darwin)
       racc (~> 1.4)
     nokogiri (1.14.0-x86_64-linux)
@@ -289,6 +292,8 @@ GEM
     timeout (0.3.1)
     tzinfo (2.0.5)
       concurrent-ruby (~> 1.0)
+    tzinfo-data (1.2022.7)
+      tzinfo (>= 1.0.0)
     unicode-display_width (2.4.2)
     warden (1.2.9)
       rack (>= 2.0.9)
@@ -310,6 +315,7 @@ GEM
     zeitwerk (2.6.6)
 
 PLATFORMS
+  aarch64-linux-musl
   arm64-darwin-22
   x86_64-linux
 
@@ -323,6 +329,7 @@ DEPENDENCIES
   factory_bot (~> 6.2)
   faker (~> 3.0)
   faraday
+  foreman
   jbuilder
   jsbundling-rails
   kaminari

@@ -13,6 +13,22 @@ services:
       - data:/var/lib/postgresql/data
       - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
       - .:/app
-
+  app:
+    build:
+      context: .
+      target: dev
+    ports:
+      - '3000:3000'
+    volumes:
+      - .:/app
+      - /app/node_modules
+    tmpfs:
+      - /app/app/assets/builds
+      - /app/public/assets
+      - /app/tmp
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_URL: 'postgres://postgres:postgres@postgres:5432/booklogger'
 volumes:
   data:
