@@ -38,6 +38,11 @@ class Author < ApplicationRecord
     end
   end
 
+  def name_sortable
+    forename = (preferred_forenames.presence || forenames).presence
+    [surname, forename].compact.join(surname_first ? " " : ", ")
+  end
+
   def initials
     return "" if forenames.blank?
 
