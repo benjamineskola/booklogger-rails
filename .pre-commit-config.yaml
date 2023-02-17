@@ -17,11 +17,11 @@ repos:
       - id: rome
   - repo: local
     hooks:
-      - id: rubocop
-        name: rubocop
+      - id: standardrb
+        name: standardrb
         language: system
         types: [ruby]
-        entry: bundle exec rubocop -A
+        entry: bundle exec standardrb --fix -d
       - id: erb-lint
         name: erb-lint
         language: system
