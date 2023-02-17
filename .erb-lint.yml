@@ -8,8 +8,12 @@ linters:
   Rubocop:
     enabled: true
     rubocop_config:
-      inherit_from:
-        - .rubocop.yml
+      require:
+        - rubocop-rails
+        - standard
+      inherit_gem:
+        standard:
+          - config/base.yml
       Layout/InitialIndentation:
         Enabled: false
       Layout/TrailingEmptyLines:
